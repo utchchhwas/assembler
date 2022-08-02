@@ -135,23 +135,34 @@ def main():
             fmt = None
             if tk[0] in {'or', 'sub', 'add', 'nor', 'and'}:
                 fmt = getRTypeFormat(tk[0], tk[1], tk[2], tk[3])
+
             elif tk[0] in {'subi', 'ori', 'addi', 'andi', 'sll', 'srl'}:
                 fmt = getITypeFormat(tk[0], tk[1], tk[2], tk[3])
+
             elif tk[0] in {'lw', 'sw'}:
                 fmt = getITypeFormat(tk[0], tk[1], tk[3], tk[2])
+
             elif tk[0] in {'beq', 'bneq'}:
                 jumpLabel = tk[3]
+
                 if jumpLabel not in labels:
                     raise RuntimeError('Unrecognized label')
+
                 # jumpOffset = labels[jumpLabel] - (lineNo + 1)
                 jumpOffset = 2 * (labels[jumpLabel] - (lineNo + 1))
+
                 fmt = getITypeFormat(tk[0], tk[1], tk[2], str(jumpOffset))
+
             elif tk[0] in {'j'}:
                 jumpLabel = tk[1]
+
                 if jumpLabel not in labels:
                     raise RuntimeError('Unrecognized label')
+
                 jumpAddr = 2 * labels[jumpLabel]
+                
                 fmt = getJTypeFormat(tk[0], str(jumpAddr))
+                
             else:
                 isLabel = True
 
