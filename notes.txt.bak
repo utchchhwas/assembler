@@ -1,0 +1,17 @@
+ 
+ 0 (0000) -> G -> or	-> or $d,$s1,$s2	-> R-type -> Opcode SrcReg1 SrcReg2 DstReg
+ 1 (0001) -> D -> subi	-> subi $d,$s,c		-> I-type -> Opcode SrcReg DstReg Immdt
+ 2 (0010) -> H -> ori	-> ori $d,$s,c		-> I-type -> Opcode SrcReg DstReg Immdt
+ 3 (0011) -> C -> sub	-> sub $d,$s1,$s2   -> R-type -> Opcode SrcReg1 SrcReg2 DstReg
+ 4 (0100) -> A -> add	-> add $d,$s1,$s2   -> R-type -> Opcode SrcReg1 SrcReg2 DstReg
+ 5 (0101) -> L -> lw	-> lw $d,c($s)		-> I-type -> Opcode SrcReg DstReg Addr
+ 6 (0110) -> P -> j		-> j c				-> J-type -> Opcode TargetJumpAddr 
+ 7 (0111) -> I -> sll	-> sll $d,$s,c		-> I-type -> Opcode SrcReg DstReg Immdt
+ 8 (1000) -> M -> sw	-> sw $d,c($s)		-> I-type -> Opcode SrcReg DstReg Addr
+ 9 (1001) -> B -> addi	-> addi,$d,$s,c		-> I-type -> Opcode SrcReg DstReg Immdt
+10 (1010) -> J -> srl	-> sll $d,$s,c		-> I-type -> Opcode SrcReg DstReg Immdt
+11 (1011) -> N -> beq	-> beq $s1,$s2,c	-> I-type -> Opcode SrcReg1 SrcReg2 Immdt
+12 (1100) -> K -> nor	-> nor,$d,$s1,$s2	-> R-type -> Opcode SrcReg1 SrcReg2 DstReg
+13 (1101) -> E -> and	-> and,$d,$s1,$s2	-> R-type -> Opcode SrcReg1 SrcReg2 DstReg
+14 (1110) -> F -> andi	-> andi,$d,$s,c		-> I-type -> Opcode SrcReg DstReg Immdt
+15 (1111) -> O -> bneq	-> beq $s1,$s2,c	-> I-type -> Opcode SrcReg1 SrcReg2 Immdt
