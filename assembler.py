@@ -148,8 +148,7 @@ def main():
                 if jumpLabel not in labels:
                     raise RuntimeError('Unrecognized label')
 
-                # jumpOffset = labels[jumpLabel] - (lineNo + 1)
-                jumpOffset = 2 * (labels[jumpLabel] - (lineNo + 1))
+                jumpOffset = labels[jumpLabel] - (lineNo + 1)
 
                 fmt = getITypeFormat(tk[0], tk[1], tk[2], str(jumpOffset))
 
@@ -159,7 +158,7 @@ def main():
                 if jumpLabel not in labels:
                     raise RuntimeError('Unrecognized label')
 
-                jumpAddr = 2 * labels[jumpLabel]
+                jumpAddr = labels[jumpLabel]
                 
                 fmt = getJTypeFormat(tk[0], str(jumpAddr))
                 
