@@ -22,7 +22,7 @@ OPCODES = {
     'nor':  '1100',
     'and':  '1101',
     'andi': '1110',
-    'benq': '1111'
+    'bneq': '1111'
 }
 
 REGISTERS = {
@@ -42,19 +42,19 @@ def parseLabel(line):
 
 def parse(line):
 
-    g = re.match(r'(or|sub|add|nor|and)[ ]+(\$t[0-4]),[ ]*(\$t[0-4]|\$zero),[ ]*(\$t[0-4]|\$zero)', line)
+    g = re.match(r'(or|sub|add|nor|and)[ ]+(\$t[0-4]|\$zero|\$sp),[ ]*(\$t[0-4]|\$zero|\$sp),[ ]*(\$t[0-4]|\$zero|\$sp)', line)
     if g:
         return g.groups()
 
-    g = re.match(r'(subi|ori|addi|andi|sll|srl)[ ]+(\$t[0-4]),[ ]*(\$t[0-4]|\$zero),[ ]*([-]?[0-9]+)', line)
+    g = re.match(r'(subi|ori|addi|andi|sll|srl)[ ]+(\$t[0-4]|\$zero|\$sp),[ ]*(\$t[0-4]|\$zero|\$sp),[ ]*([-]?[0-9]+)', line)
     if g:
         return g.groups()
 
-    g = re.match(r'(lw|sw)[ ]+(\$t[0-4]),[ ]*([0-9]+)\((\$t[0-4]|\$sp)\)', line)
+    g = re.match(r'(lw|sw)[ ]+(\$t[0-4]|\$zero|\$sp),[ ]*([0-9]+)\((\$t[0-4]|\$zero|\$sp)\)', line)
     if g:
         return g.groups()
 
-    g = re.match(r'(beq|bneq)[ ]+(\$t[0-4]|\$zero),[ ]*(\$t[0-4]|\$zero),[ ]*([_a-zA-Z][_a-zA-Z0-9]+)', line)
+    g = re.match(r'(beq|bneq)[ ]+(\$t[0-4]|\$zero|\$sp),[ ]*(\$t[0-4]|\$zero|\$sp),[ ]*([_a-zA-Z][_a-zA-Z0-9]+)', line)
     if g:
         return g.groups()
 
