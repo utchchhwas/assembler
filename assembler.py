@@ -1,6 +1,7 @@
 # Custom MIPS Assembler written in Python3
 # Author: utchchhwas
 
+from pprint import pprint
 from sys import argv
 import os
 import re
@@ -78,7 +79,7 @@ def getITypeFormat(opcode, desReg, srcReg, const):
     constVal = int(const)
 
     if constVal < -8 or constVal >= 8:
-        raise RuntimeError('Immediate value overflow')
+        raise RuntimeError(f'Immediate value overflow {constVal}')
         
     if constVal < 0:
         constVal += (1 << 32)
@@ -91,19 +92,44 @@ def getJTypeFormat(opcode, jmpAddr):
     jmpAddrVal = int(jmpAddr)
 
     if jmpAddrVal >= 256:
-        raise RuntimeError('Jump address overflow')
+        raise RuntimeError(f'Jump address overflow {jmpAddrVal}')
 
     fmt = [OPCODES[opcode], '{0:08b}'.format(jmpAddrVal)[-8:], '0000']
     return fmt
+
+
+
+def preassemble(filename):
+    with open(filename) as infile, open(filename+".new.asm", 'w') as outfile:
+        while (line := infile.readline().strip()):
+            replacement_line = line
+            colon_pos = line.find(':')
+            if len(line) !=0 and colon_pos != -1 and colon_pos < len(line)-1:
+                # has a label and some extra code
+                label = line[:colon_pos+1]
+                replacement_line = line[colon_pos+1:].strip()
+                outfile.write(label+'\n')
+
+            if replacement_line[:4].lower() == "push":
+                arg = replacement_line[4:].strip()
+                replacement_line = "subi $sp, $sp, 1\nsw "+arg+", 0($sp)"
+
+            elif replacement_line[:3].lower() == "pop":
+                arg = replacement_line[3:].strip()
+                replacement_line = "lw "+arg+", 0($sp)\naddi $sp, $sp, 1"
+
+            outfile.write(replacement_line+"\n")
 
 
 def main():
     if len(argv) != 2:
         print("Invalid usage: python assembler.py [inputFile]")
         exit(1)
+
+    preassemble(argv[1])
     
     try:
-        asmFile = open(argv[1], 'r')
+        asmFile = open(argv[1] + '.new.asm', 'r')
     except FileNotFoundError:
         print(f'Error: {argv[1]} not found')
         exit(1)
@@ -123,6 +149,8 @@ def main():
             labels[tk[1]] = lineNo
         else:
             lineNo += 1
+
+    pprint(f'labels: {labels}')
 
     error = False
     lineNo = 0
